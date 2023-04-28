@@ -795,3 +795,6 @@ alert http any any -> any any (msg:"TGI HUNT Suspicious String in HTTP POST Body
 alert http any any -> any any (msg:"TGI HUNT Suspicious String in HTTP POST Body (wget)"; flow:established,to_server; http.request_body; content:"wget"; pcre:"/\bwget\b/"; threshold:type limit, track by_src, seconds 60, count 1; classtype:bad-unknown; reference:url,unit42.paloaltonetworks.com/exploits-interactsh/; sid:2610850; rev:1;)
 
 alert http any any -> any any (msg:"TGI HUNT Suspicious String in HTTP POST Body (curl)"; flow:established,to_server; http.request_body; content:"curl"; pcre:"/\bcurl\b/"; threshold:type limit, track by_src, seconds 60, count 1; classtype:bad-unknown; reference:url,unit42.paloaltonetworks.com/exploits-interactsh/; sid:2610851; rev:1;)
+
+alert tcp any any -> any any (msg:"LOCAL DOS SYN packet flood inbound, Potential DOS"; flow:to_server; flags: S,12; threshold: type both, track by_dst, count 5000, seconds 5; classtype:misc-activity; sid:5;)
+alert tcp any any -> any any (msg:"LOCAL DOS SYN packet flood outbound, Potential DOS"; flow:to_server; flags: S,12; threshold: type both, track by_dst, count 5000, seconds 5; classtype:misc-activity; sid:6;)
