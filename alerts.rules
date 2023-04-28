@@ -13,3 +13,7 @@ alert tcp $HOME_NET 3306 -> any any (msg:"ET SCAN Non-Allowed Host Tried to Conn
 alert tcp any any -> any any (msg:"CUSTOM: Possbily RDP bruteforce (Source initiator)"; flow:established, to_server; content:"|03 00 00|"; depth:3; content:"|e0 00 00 00 00 00|"; offset:5; depth:6; content:"Cookie|3a| mstshash="; fast_pattern; threshold:type threshold, track by_src, count 5, seconds 30; classtype: suspicious-login; sid: 30161018; metadata: created_by black5ugar;)
 # REDIS
 alert tcp any any -> any any (msg:"CUSTOM: Possbily REDIS bruteforce failed"; flow:established, to_client; content:"|2d|WRONGPASS|20|invalid|20|username|2d|password|20|pair"; fast_pattern; threshold:type threshold, track by_src, count 5, seconds 30; classtype: suspicious-login; sid: 30161026; metadata: created_by black5ugar;)
+# frp 
+alert tcp $HOME_NET any -> $EXTERNAL_NET  any (msg:"CUSTOM: possibly frp outbonud traffic detected";flow:to_server,established;content:"|7b 22|"; offset:9;content:"privilege_key|22 3a 22|"; fast_pattern; nocase; classtype: proxy; sid: 4110002;)
+# fr
+alert tcp $EXTERNAL_NET any -> $HOME_NET  any (msg:"CUSTOM: possibly frp inbound traffic detected";flow:to_client,established;content:"|7b 22|"; offset:9; content:"run_id|22 3a 22|"; fast_pattern; nocase; classtype: proxy; sid: 4110003;)
