@@ -797,4 +797,4 @@ alert tcp any any -> any any (msg:"LOCAL DOS SYN packet flood inbound, Potential
 alert tcp any any -> any any (msg:"LOCAL DOS SYN packet flood outbound, Potential DOS"; flow:to_server; flags: S,12; threshold: type both, track by_dst, count 5000, seconds 5; classtype:misc-activity; sid:6;)
 
 
-#alert http any any -> any any (msg:"ET TROJAN Possible MD5 in URI";flow: established, to_server; urilen: 33; http.uri; pcre:"/^\/([A-F0-9]{32})/i" ; classtype:trojan-activity; sid:1; rev:3;)
+alert http any any -> any any (msg:"ET TROJAN Possible MD5 in URI";flow: established, to_server; urilen: 33; http.uri; pcre:"/^\/([A-F0-9]{32})/i" ; classtype:trojan-activity; sid:1; rev:3;)
